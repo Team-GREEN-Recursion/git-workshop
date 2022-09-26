@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "pixel";
+  src: url("./font/x12y16pxMaruMonica.ttf") format("truetype");
+}
+
+.main {
+  text-align: center;
+}
+
+body {
+  font-family: "pixel";
+  color: aliceblue;
+  background-color: gray;
+}
+
+.button {
+  color: white;
+  padding-top: 10px;
+}
+
+#canvasId {
+  background-color: cyan;
+}
