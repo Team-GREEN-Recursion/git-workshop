@@ -4,21 +4,18 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles.css">
-    <title>簡易テトリス</title>
+    <title>TETRIS GAME</title>
 </head>
 
 <body>
     <div class="main">
         <h1>
-            <div>TETRIS OF OSAKANA</div>
+            <div id="title">TETRIS GAME</div>
         </h1>
         <div class="drawInfo">
-            <div>スコア：</div>
-            <div id="score-count">0</div>
-            <!-- どうしてもここに空白が入らないので力技 -->
-            <div>　</div>
-            <div>消したライン数：</div>
-            <div id="line-count">0</div>
+            <div>スコア：<span id="score-count">0</span></div>
+            <div> </div>
+            <div>消したライン数：<span id="line-count">0</span></div>
         </div>
         <div class="button">
             <span class="start-button" id="start-button">
@@ -29,7 +26,7 @@
             </span>
         </div></br>
         <canvas id="canvasId"></canvas>
-        <p>方向キー: 移動、　shiftキー: 一気に落とす、　スペースキー: 回転</p>
+        <p>← →: 移動、　↑: 一気に落とす、 ↓: 加速、　z: 左回転、　x: 右回転</p>
     </div>
 </body>
 <script type="text/javascript" src="./index.js"></script>
