@@ -1,6 +1,5 @@
 //---------------------- 定数部 --------------------------
 
-
 const DROP_SPEED = 1000;
 
 //フィールドのサイズ
@@ -241,7 +240,7 @@ document.onkeydown = function (e) {
       tetromino = newTetrominoRight;
       break;
   }
-  // 再描画
+  //  再描画
   drawField();
   drawTetromino();
 };
