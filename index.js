@@ -1,6 +1,5 @@
 //---------------------- 定数部 --------------------------
 
-
 const DROP_SPEED = 500;
 
 //フィールドのサイズ
@@ -285,7 +284,8 @@ function dropTetromino() {
   tetromino_y++;
 
   // this if statement should be change for checkMove function
-  if (tetromino_y > FIELD_HEIGHT) {
+  if (tetromino_y > 5) {
+    fixTetromino();
     appearNewTetro();
   }
 }
@@ -297,4 +297,14 @@ function appearNewTetro() {
   //init new tetro's coordinate
   tetromino_x = START_X;
   tetromino_y = START_Y;
+}
+
+function fixTetromino() {
+  for (let y = 0; y < TETROMINO_SIZE; y++) {
+    for (let x = 0; x < TETROMINO_SIZE; x++) {
+      if (tetromino[y][x]) {
+        field[tetromino_y + y][tetromino_x + x] = typeIndex;
+      }
+    }
+  }
 }
