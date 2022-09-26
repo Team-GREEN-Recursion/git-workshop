@@ -239,6 +239,7 @@ document.onkeydown = function (e) {
       tetromino = newTetrominoRight;
       break;
   }
+  // 再描画
   drawField();
   drawTetromino();
 };
