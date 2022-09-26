@@ -197,51 +197,65 @@ function drawTetromino() {
   }
 }
 
+// 移動可能かチェックを行う関数
+function checkMove(mx, my, newTetromino) {
+  // 引数の数が足りない場合はnewTetrominoに現在のテトロミノを格納
+  if (newTetromino === undefined) newTetromino = tetromino;
+  for (let y = 0; y < TETROMINO_SIZE; y++) {
+    for (let x = 0; x < TETROMINO_SIZE; x++) {
+      if (newTetromino[y][x]) {
+        let nx = mx + tetromino_x + x;
+        let ny = my + tetromino_y + y;
+        if (
+          nx < 0 ||
+          nx >= FIELD_WIDTH ||
+          ny >= FIELD_HEIGHT ||
+          field[ny][nx]
+        ) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+
 // キーボード押下後の処理
-// ===========================================
-// TODO: checkMove作成後、
-//       1.各キーの処理をコメントアウトの方に変更する
-//       2.上キーの処理をコメントアウトを除く
-//       3.zキーとxキーの該当箇所をコメントアウトのコードに変更する。
-// ===========================================
 document.onkeydown = function (e) {
   // ゲームオーバーフラグとリピートフラグが立っているならキーボード使用できなくする。
   //if (gameOverFlg) return;
   //if (!repeatFlg) return;
   switch (e.key) {
     case "ArrowLeft": // 左
-      // if(checkMove(-1, 0) tetromino_x--;
-      tetromino_x--;
+      if (checkMove(-1, 0)) tetromino_x--;
+      //tetromino_x--;
       break;
     case "ArrowRight": // 右
-      // if(checkMove(1,0)) tetromino_x++;
-      tetromino_x++;
+      if (checkMove(1, 0)) tetromino_x++;
+      //tetromino_x++;
       break;
     case "ArrowDown": // 下
-      // if(checkMove(0,1)) tetromino_y++;
-      tetromino_y++;
+      if (checkMove(0, 1)) tetromino_y++;
+      //tetromino_y++;
       break;
     case "ArrowUp": // 上
-      // テトロミノを最後まで落とす
-      //while (checkMove(0,1)) tetromino_y++;
+      // テトロミノを移動できなくなるまで落とす
+      while (checkMove(0, 1)) tetromino_y++;
       break;
     case "z": // zキー
       // rotate右
-      console.log(e.key);
       let newTetrominoLeft = rotateLeft();
-      // chechMove作成後に切り替える
-      // if (checkMove(0, 0, newTetromino)) tetromino = newTetrominoLeft;
-      tetromino = newTetrominoLeft;
+      // テトロミノ回転関数で返される回転後の座標設定する
+      if (checkMove(0, 0, newTetrominoLeft)) tetromino = newTetrominoLeft;
       break;
     case "x": // xキー
       // rotate左
       let newTetrominoRight = rotateRight();
-      // chechMove作成後に切り替える
-      // if (checkMove(0, 0, newTetromino)) tetromino = newTetrominoRight;
-      tetromino = newTetrominoRight;
+      // テトロミノ回転関数で返される回転後の座標設定する
+      if (checkMove(0, 0, newTetrominoRight)) tetromino = newTetrominoRight;
       break;
   }
-  //  再描画
+  // 再描画
   drawField();
   drawTetromino();
 };
