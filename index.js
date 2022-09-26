@@ -243,7 +243,6 @@ document.onkeydown = function (e) {
       break;
     case "z": // zキー
       // rotate右
-      console.log(e.key);
       let newTetrominoLeft = rotateLeft();
       // テトロミノ回転関数で返される回転後の座標設定する
       if (checkMove(0, 0, newTetrominoLeft)) tetromino = newTetrominoLeft;
