@@ -1,6 +1,6 @@
 //---------------------- 定数部 --------------------------
 
-const DROP_SPEED = 1000;
+const DROP_SPEED = 500;
 //フィールドのサイズ
 const FIELD_WIDTH = 12;
 const FIELD_HEIGHT = 20;
@@ -197,4 +197,18 @@ function drawTetromino() {
 
 function dropTetromino() {
   tetromino_y++;
+
+  // this if statement should be change for checkMove function
+  if (tetromino_y > FIELD_HEIGHT) {
+    appearNewTetro();
+  }
+}
+
+function appearNewTetro() {
+  typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
+  tetromino = TETROMINO_TYPES[typeIndex];
+
+  //init new tetro's coordinate
+  tetromino_x = START_X;
+  tetromino_y = START_Y;
 }
