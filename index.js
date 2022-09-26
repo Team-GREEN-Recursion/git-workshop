@@ -1,5 +1,6 @@
 //---------------------- 定数部 --------------------------
 
+const DROP_SPEED = 1000;
 //フィールドのサイズ
 const FIELD_WIDTH = 12;
 const FIELD_HEIGHT = 20;
@@ -116,6 +117,13 @@ init();
 drawField();
 //テトロミノがランダムに表示されます
 drawTetromino();
+
+//DROP_SPEEDに一回第一引数の関数郡が実行されます
+setInterval(() => {
+  dropTetromino();
+  drawField();
+  drawTetromino();
+}, DROP_SPEED);
 
 //---------------------- 関数部 --------------------------
 
@@ -268,4 +276,8 @@ function rotateLeft() {
   }
 
   return newTetromino;
+}
+
+function dropTetromino() {
+  tetromino_y++;
 }
