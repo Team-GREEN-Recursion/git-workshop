@@ -295,10 +295,10 @@ function rotateLeft() {
 }
 
 function dropTetromino() {
-  tetromino_y++;
-
-  // this if statement should be change for checkMove function
-  if (tetromino_y > FIELD_HEIGHT) {
+  if (checkMove(0, 1, tetromino)) {
+    tetromino_y++;
+  } else {
+    fixTetromino();
     appearNewTetro();
   }
 }
@@ -310,4 +310,14 @@ function appearNewTetro() {
   //init new tetro's coordinate
   tetromino_x = START_X;
   tetromino_y = START_Y;
+}
+
+function fixTetromino() {
+  for (let y = 0; y < TETROMINO_SIZE; y++) {
+    for (let x = 0; x < TETROMINO_SIZE; x++) {
+      if (tetromino[y][x]) {
+        field[tetromino_y + y][tetromino_x + x] = typeIndex;
+      }
+    }
+  }
 }
