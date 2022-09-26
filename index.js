@@ -1,6 +1,5 @@
 //---------------------- 定数部 --------------------------
 
-
 //フィールドのサイズ
 const FIELD_WIDTH = 12;
 const FIELD_HEIGHT = 20;
@@ -23,51 +22,51 @@ const TETROMINO_TYPES = [
     [1, 1, 1, 1],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-    [0, 0, 0, 0]
+    [0, 0, 0, 0],
   ],
   //L型
   [
     [0, 1, 0, 0],
     [0, 1, 0, 0],
     [0, 1, 1, 0],
-    [0, 0, 0, 0]
+    [0, 0, 0, 0],
   ],
   //J型
   [
     [0, 0, 1, 0],
     [0, 0, 1, 0],
     [0, 1, 1, 0],
-    [0, 0, 0, 0]
+    [0, 0, 0, 0],
   ],
   //T型
   [
     [0, 1, 0, 0],
     [0, 1, 1, 0],
     [0, 1, 0, 0],
-    [0, 0, 0, 0]
+    [0, 0, 0, 0],
   ],
   //□型
   [
     [0, 1, 1, 0],
     [0, 1, 1, 0],
     [0, 0, 0, 0],
-    [0, 0, 0, 0]
+    [0, 0, 0, 0],
   ],
   //Z型
   [
     [1, 1, 0, 0],
     [0, 1, 1, 0],
     [0, 0, 0, 0],
-    [0, 0, 0, 0]
+    [0, 0, 0, 0],
   ],
   //S型
   [
     [0, 1, 1, 0],
     [1, 1, 0, 0],
     [0, 0, 0, 0],
-    [0, 0, 0, 0]
-  ]
-]
+    [0, 0, 0, 0],
+  ],
+];
 
 //テトロミノ本体
 let tetromino;
@@ -94,8 +93,8 @@ const TETROMINO_COLORS = [
   "#C71585",
   "#FF367F",
   "#EE82EE",
-  "#CC0099"
-]
+  "#CC0099",
+];
 
 //キャンバス用意
 //キャンバスのサイズ = ブロック一つのサイズ × フィールドサイズ
@@ -110,7 +109,6 @@ canvas.width = CANVAS_SIZE_WIDTH;
 canvas.height = CANVAS_SIZE_HEIGHT;
 canvas.style.border = "4px solid #555";
 
-
 //---------------------- 実行部 --------------------------
 
 //フィールドを初期化してから、フィールドを描画します
@@ -119,9 +117,7 @@ drawField();
 //テトロミノがランダムに表示されます
 drawTetromino();
 
-
 //---------------------- 関数部 --------------------------
-
 
 //フィールド上のブロックを初期化する関数
 function init() {
@@ -174,7 +170,6 @@ function drawField() {
 
 //テトロミノを描画する関数
 function drawTetromino() {
-
   //着地点の高さ
   let plus = 0;
 
@@ -199,36 +194,36 @@ function drawTetromino() {
 //       2.上キーの処理をコメントアウトを除く
 //       3.zキーとxキーの該当箇所をコメントアウトのコードに変更する。
 // ===========================================
-document.onkeydown = function(e){
+document.onkeydown = function (e) {
   // ゲームオーバーフラグとリピートフラグが立っているならキーボード使用できなくする。
   //if (gameOverFlg) return;
   //if (!repeatFlg) return;
-  switch(e.keyCode) {
-    case 37: // 左
+  switch (e.key) {
+    case "ArrowLeft": // 左
       // if(checkMove(-1, 0) tetromino_x--;
       tetromino_x--;
       break;
-    case 39: // 右 
+    case "ArrowRight": // 右
       // if(checkMove(1,0)) tetromino_x++;
       tetromino_x++;
       break;
-    case 40: // 下
+    case "ArrowDown": // 下
       // if(checkMove(0,1)) tetromino_y++;
       tetromino_y++;
       break;
-    case 38: // 上 
+    case "ArrowUp": // 上
       // テトロミノを最後まで落とす
       //while (checkMove(0,1)) tetromino_y++;
       break;
-    case 90: // zキー
+    case "z": // zキー
       // rotate右
-      console.log(e.keyCode);
+      console.log(e.key);
       let newTetrominoLeft = rotateLeft();
       // chechMove作成後に切り替える
       // if (checkMove(0, 0, newTetromino)) tetromino = newTetrominoLeft;
       tetromino = newTetrominoLeft;
       break;
-    case 88: // xキー
+    case "x": // xキー
       // rotate左
       let newTetrominoRight = rotateRight();
       // chechMove作成後に切り替える
@@ -238,7 +233,7 @@ document.onkeydown = function(e){
   }
   drawField();
   drawTetromino();
-}
+};
 
 // ===========================================
 // TODO: 以下の回転関数は一つに統合する（余裕あれば）
