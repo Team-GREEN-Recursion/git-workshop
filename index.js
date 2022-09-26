@@ -295,7 +295,6 @@ function rotateLeft() {
 }
 
 function dropTetromino() {
-  // this if statement should be change for checkMove function
   if (checkMove(0, 1, tetromino)) {
     tetromino_y++;
   } else {
