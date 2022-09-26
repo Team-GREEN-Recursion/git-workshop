@@ -1,7 +1,7 @@
 //---------------------- 定数部 --------------------------
 
 
-const DROP_SPEED = 1000;
+const DROP_SPEED = 500;
 
 //フィールドのサイズ
 const FIELD_WIDTH = 12;
@@ -197,6 +197,104 @@ function drawTetromino() {
   }
 }
 
+// キーボード押下後の処理
+// ===========================================
+// TODO: checkMove作成後、
+//       1.各キーの処理をコメントアウトの方に変更する
+//       2.上キーの処理をコメントアウトを除く
+//       3.zキーとxキーの該当箇所をコメントアウトのコードに変更する。
+// ===========================================
+document.onkeydown = function (e) {
+  // ゲームオーバーフラグとリピートフラグが立っているならキーボード使用できなくする。
+  //if (gameOverFlg) return;
+  //if (!repeatFlg) return;
+  switch (e.key) {
+    case "ArrowLeft": // 左
+      // if(checkMove(-1, 0) tetromino_x--;
+      tetromino_x--;
+      break;
+    case "ArrowRight": // 右
+      // if(checkMove(1,0)) tetromino_x++;
+      tetromino_x++;
+      break;
+    case "ArrowDown": // 下
+      // if(checkMove(0,1)) tetromino_y++;
+      tetromino_y++;
+      break;
+    case "ArrowUp": // 上
+      // テトロミノを最後まで落とす
+      //while (checkMove(0,1)) tetromino_y++;
+      break;
+    case "z": // zキー
+      // rotate右
+      console.log(e.key);
+      let newTetrominoLeft = rotateLeft();
+      // chechMove作成後に切り替える
+      // if (checkMove(0, 0, newTetromino)) tetromino = newTetrominoLeft;
+      tetromino = newTetrominoLeft;
+      break;
+    case "x": // xキー
+      // rotate左
+      let newTetrominoRight = rotateRight();
+      // chechMove作成後に切り替える
+      // if (checkMove(0, 0, newTetromino)) tetromino = newTetrominoRight;
+      tetromino = newTetrominoRight;
+      break;
+  }
+  //  再描画
+  drawField();
+  drawTetromino();
+};
+
+// ===========================================
+// TODO: 以下の回転関数は一つに統合する（余裕あれば）
+// ===========================================
+// テトロミノを右に回転する関数
+function rotateRight() {
+  // 回転後のテトロミノ格納用配列
+  let newTetromino = [];
+
+  // テトロミノを右回転
+  for (let y = 0; y < TETROMINO_SIZE; y++) {
+    newTetromino[y] = [];
+    for (let x = 0; x < TETROMINO_SIZE; x++) {
+      newTetromino[y][x] = tetromino[TETROMINO_SIZE - x - 1][y];
+    }
+  }
+
+  return newTetromino;
+}
+
+// テトロミノを左に回転する関数
+function rotateLeft() {
+  // 回転後のテトロミノ格納用配列
+  let newTetromino = [];
+
+  // テトロミノを左回転
+  for (let y = 0; y < TETROMINO_SIZE; y++) {
+    newTetromino[y] = [];
+    for (let x = 0; x < TETROMINO_SIZE; x++) {
+      newTetromino[y][x] = tetromino[x][TETROMINO_SIZE - y - 1];
+    }
+  }
+
+  return newTetromino;
+}
+
 function dropTetromino() {
   tetromino_y++;
+
+  // this if statement should be change for checkMove function
+  if (tetromino_y > FIELD_HEIGHT) {
+    appearNewTetro();
+  }
+}
+
+function appearNewTetro() {
+  typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
+  tetromino = TETROMINO_TYPES[typeIndex];
+
+  //init new tetro's coordinate
+  tetromino_x = START_X;
+  tetromino_y = START_Y;
 }
