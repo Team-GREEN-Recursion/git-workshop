@@ -124,6 +124,7 @@ setInterval(() => {
   dropTetromino();
   drawField();
   drawTetromino();
+  console.log(isGameOver());
 }, DROP_SPEED);
 
 //---------------------- 関数部 --------------------------
@@ -222,7 +223,7 @@ function checkMove(mx, my, newTetromino) {
 // キーボード押下後の処理
 document.onkeydown = function (e) {
   // ゲームオーバーフラグとリピートフラグが立っているならキーボード使用できなくする。
-  //if (gameOverFlg) return;
+  //if (isGameOver) return;
   //if (!repeatFlg) return;
   switch (e.key) {
     case "ArrowLeft": // 左
@@ -320,4 +321,9 @@ function fixTetromino() {
       }
     }
   }
+}
+
+function isGameOver() {
+  if (checkMove(0, 0, tetromino)) return false;
+  else return true;
 }
