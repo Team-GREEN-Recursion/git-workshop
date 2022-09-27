@@ -223,7 +223,7 @@ function checkMove(mx, my, newTetromino) {
 // キーボード押下後の処理
 document.onkeydown = function (e) {
   // ゲームオーバーフラグとリピートフラグが立っているならキーボード使用できなくする。
-  //if (isGameOver) return;
+  //if (isGameOver()) return;
   //if (!repeatFlg) return;
   switch (e.key) {
     case "ArrowLeft": // 左
