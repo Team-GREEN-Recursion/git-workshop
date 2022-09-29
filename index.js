@@ -130,9 +130,6 @@ let gameStartFlg = false;
 
 document.getElementById("start-button").onclick = () => {
   if (!stopButtonFlg) {
-    // ゲーム実行中をtrueにする
-    gameStartFlg = true;
-
     // "スコア"と"消したライン数"を初期化します
     document.getElementById("score-count").innerHTML = 0;
     document.getElementById("line-count").innerHTML = 0;
@@ -148,6 +145,13 @@ document.getElementById("start-button").onclick = () => {
     onSetInterval();
 
     drawField();
+
+    // "GAME START"と描画する
+    if (!gameStartFlg && !gameOverFlg) drawCaption("START", 60, "yellow");
+
+    // ゲーム実行中をtrueにする
+    gameStartFlg = true;
+
     //テトロミノがランダムに表示されます
     drawTetromino();
   }
@@ -161,7 +165,10 @@ function onSetInterval() {
     drawField();
     drawTetromino();
     deleteCompletedLines();
-    if (isGameOver()) gameOverFlg = true;
+    if (isGameOver()) {
+      gameOverFlg = true;
+      gameStartFlg = false;
+    }
     if (gameOverFlg) {
       drawCaption("GAME OVER", 60, "yellow");
       return;
