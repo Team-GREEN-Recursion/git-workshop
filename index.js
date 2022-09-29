@@ -111,21 +111,80 @@ canvas.width = CANVAS_SIZE_WIDTH;
 canvas.height = CANVAS_SIZE_HEIGHT;
 canvas.style.border = "4px solid #555";
 
+// setInterval, clearIntervalで使用します
+let interval;
+
+// ストップボタンで使用する、リピートフラグ
+let repeatFlg = true;
+
+// ゲームオーバーの判定用
+let gameOverFlg = false;
+
+// STOPボタンフラグ
+let stopButtonFlg = false;
+
+// ゲーム実行中を判定するフラグ
+let gameStartFlg = false;
+
 //---------------------- 実行部 --------------------------
 
-//フィールドを初期化してから、フィールドを描画します
-init();
-drawField();
-//テトロミノがランダムに表示されます
-drawTetromino();
+document.getElementById("start-button").onclick = () => {
+  if (!stopButtonFlg) {
+    // ゲーム実行中をtrueにする
+    gameStartFlg = true;
 
-//DROP_SPEEDに一回第一引数の関数郡が実行されます
-setInterval(() => {
-  dropTetromino();
-  drawField();
-  drawTetromino();
-  console.log(isGameOver());
-}, DROP_SPEED);
+    // "スコア"と"消したライン数"を初期化します
+    document.getElementById("score-count").innerHTML = 0;
+    document.getElementById("line-count").innerHTML = 0;
+
+    // ゲームオーバーフラグを初期化します
+    gameOverFlg = false;
+
+    //フィールドを初期化してから、フィールドを描画します
+    init();
+
+    // intervalの初期化
+    onClearInterval();
+    onSetInterval();
+
+    drawField();
+    //テトロミノがランダムに表示されます
+    drawTetromino();
+  }
+};
+
+// setIntervalを動かすラップ関数
+function onSetInterval() {
+  // DROP_SPEEDに一回第一引数の関数郡が実行されます
+  interval = setInterval(() => {
+    dropTetromino();
+    drawField();
+    drawTetromino();
+    deleteCompletedLines();
+    console.log(isGameOver());
+  }, DROP_SPEED);
+}
+
+// clearIntervalを動かすラップ関数
+function onClearInterval() {
+  clearInterval(interval);
+}
+
+// ストップボタン押したときの処理
+document.getElementById("stop-button").onclick = () => {
+  // ゲーム実行中の場合のみ動きます
+  if (gameStartFlg) {
+    if (stopButtonFlg) {
+      // STOPボタンの時
+      onStopButton();
+      stopButtonFlg = false;
+    } else {
+      // RESTARTボタンの時
+      onStopButton();
+      stopButtonFlg = true;
+    }
+  }
+};
 
 //---------------------- 関数部 --------------------------
 
@@ -224,7 +283,7 @@ function checkMove(mx, my, newTetromino) {
 document.onkeydown = function (e) {
   // ゲームオーバーフラグとリピートフラグが立っているならキーボード使用できなくする。
   //if (isGameOver()) return;
-  //if (!repeatFlg) return;
+  if (!repeatFlg) return;
   switch (e.key) {
     case "ArrowLeft": // 左
       if (checkMove(-1, 0)) tetromino_x--;
@@ -305,7 +364,8 @@ function dropTetromino() {
 }
 
 function appearNewTetro() {
-  typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
+  // typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
+  typeIndex = 5;
   tetromino = TETROMINO_TYPES[typeIndex];
 
   //init new tetro's coordinate
@@ -326,4 +386,49 @@ function fixTetromino() {
 function isGameOver() {
   if (checkMove(0, 0, tetromino)) return false;
   else return true;
+}
+
+function isLineCompleted(y) {
+  for (let x = 0; x < FIELD_WIDTH; x++) {
+    if (!field[y][x]) return false;
+  }
+  return true;
+}
+
+function deleteCompletedLines() {
+  let completedLineIndex = [];
+
+  for (let y = 0; y < FIELD_HEIGHT; y++) {
+    if (isLineCompleted(y)) completedLineIndex.push(y);
+  }
+
+  // delete lines
+  while (completedLineIndex.length) {
+    // shift() remove the first element of the array
+    let toDeleteLineIndex = completedLineIndex.shift();
+
+    for (let ny = toDeleteLineIndex; ny > 0; ny--) {
+      for (let nx = 0; nx < FIELD_WIDTH; nx++) {
+        field[ny][nx] = field[ny - 1][nx];
+      }
+    }
+  }
+}
+
+// ストップボタン関数
+function onStopButton() {
+  if (repeatFlg) {
+    // インターバルを初期化
+    onClearInterval();
+    // STOPボタンの表示をRESTARTに変更
+    document.getElementById("action").innerHTML = "RESTART";
+    repeatFlg = false;
+  } else {
+    // インターバルを初期化して再度セットします
+    onClearInterval();
+    onSetInterval();
+    // RESTARTボタンの表示をSTOPに変更
+    document.getElementById("action").innerHTML = " STOP ";
+    repeatFlg = true;
+  }
 }
