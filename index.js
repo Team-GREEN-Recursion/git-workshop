@@ -177,7 +177,7 @@ function onClearInterval() {
 // ストップボタン押したときの処理
 document.getElementById("stop-button").onclick = () => {
   // ゲーム実行中の場合のみ動きます
-  if (gameStartFlg) {
+  if (gameStartFlg && !gameOverFlg) {
     if (stopButtonFlg) {
       // STOPボタンの時
       onStopButton();
@@ -425,7 +425,7 @@ function onStopButton() {
     onClearInterval();
 
     // PAUSEと画面に表示する
-    drawCaption("PAUSE", 60, "yellow");
+    if (!gameOverFlg) drawCaption("PAUSE", 60, "yellow");
 
     // STOPボタンの表示をRESTARTに変更
     document.getElementById("action").innerHTML = "RESTART";
