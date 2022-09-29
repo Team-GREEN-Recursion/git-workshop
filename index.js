@@ -160,6 +160,7 @@ function onSetInterval() {
     dropTetromino();
     drawField();
     drawTetromino();
+    deleteCompletedLines();
   }, DROP_SPEED);
 }
 
@@ -362,7 +363,8 @@ function dropTetromino() {
 }
 
 function appearNewTetro() {
-  typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
+  // typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
+  typeIndex = 5;
   tetromino = TETROMINO_TYPES[typeIndex];
 
   //init new tetro's coordinate
@@ -375,6 +377,33 @@ function fixTetromino() {
     for (let x = 0; x < TETROMINO_SIZE; x++) {
       if (tetromino[y][x]) {
         field[tetromino_y + y][tetromino_x + x] = typeIndex;
+      }
+    }
+  }
+}
+
+function isLineCompleted(y) {
+  for (let x = 0; x < FIELD_WIDTH; x++) {
+    if (!field[y][x]) return false;
+  }
+  return true;
+}
+
+function deleteCompletedLines() {
+  let completedLineIndex = [];
+
+  for (let y = 0; y < FIELD_HEIGHT; y++) {
+    if (isLineCompleted(y)) completedLineIndex.push(y);
+  }
+
+  // delete lines
+  while (completedLineIndex.length) {
+    // shift() remove the first element of the array
+    let toDeleteLineIndex = completedLineIndex.shift();
+
+    for (let ny = toDeleteLineIndex; ny > 0; ny--) {
+      for (let nx = 0; nx < FIELD_WIDTH; nx++) {
+        field[ny][nx] = field[ny - 1][nx];
       }
     }
   }
