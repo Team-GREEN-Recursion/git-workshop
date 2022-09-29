@@ -18,6 +18,32 @@ body {
   padding-top: 10px;
 }
 
+.btn-design {
+  margin: 0.5em;
+  padding: 0.3em 2em;
+  text-decoration: none;
+  font-family: "pixel";
+  font-size: 22px;
+  background-color: #6f6f6f;
+  color: white;
+  font-weight: bold;
+  /* アニメーション用 */
+  transition: all 0.1s ease-out;
+}
+
+.btn-design.btn-border-outset {
+  border: 4px outset #5e5c5c;
+}
+
+.btn-design:active {
+  border: 4px inset #706e6e;
+}
+
+.btn-design:hover {
+  background-color: rgb(240, 240, 240);
+  color: black;
+}
+
 #canvasId {
   background-color: cyan;
 }
