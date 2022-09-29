@@ -126,8 +126,6 @@ let stopButtonFlg = false;
 // ゲーム実行中かどうかを判定するフラグ
 let gameStartFlg = false;
 
-const sleep = (waitTime) =>
-  new Promise((resolve) => setTimeout(resolve, waitTime));
 //---------------------- 実行部 --------------------------
 
 document.getElementById("start-button").onclick = () => {
@@ -162,6 +160,12 @@ function onSetInterval() {
     dropTetromino();
     drawField();
     drawTetromino();
+    deleteCompletedLines();
+    if (isGameOver()) gameOverFlg = true;
+    if (gameOverFlg) {
+      drawCaption("GAME OVER", 60, "yellow");
+      return;
+    }
   }, DROP_SPEED);
 }
 
@@ -357,17 +361,12 @@ function dropTetromino() {
   } else {
     fixTetromino();
     appearNewTetro();
-    if (!checkMove(0, 0)) {
-      console.log("TEST");
-      gameOverFlg = true;
-      //drawGameOver();
-      return;
-    }
   }
 }
 
 function appearNewTetro() {
-  typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
+  // typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
+  typeIndex = 5;
   tetromino = TETROMINO_TYPES[typeIndex];
 
   //init new tetro's coordinate
@@ -388,6 +387,33 @@ function fixTetromino() {
 function isGameOver() {
   if (checkMove(0, 0, tetromino)) return false;
   else return true;
+}
+
+function isLineCompleted(y) {
+  for (let x = 0; x < FIELD_WIDTH; x++) {
+    if (!field[y][x]) return false;
+  }
+  return true;
+}
+
+function deleteCompletedLines() {
+  let completedLineIndex = [];
+
+  for (let y = 0; y < FIELD_HEIGHT; y++) {
+    if (isLineCompleted(y)) completedLineIndex.push(y);
+  }
+
+  // delete lines
+  while (completedLineIndex.length) {
+    // shift() remove the first element of the array
+    let toDeleteLineIndex = completedLineIndex.shift();
+
+    for (let ny = toDeleteLineIndex; ny > 0; ny--) {
+      for (let nx = 0; nx < FIELD_WIDTH; nx++) {
+        field[ny][nx] = field[ny - 1][nx];
+      }
+    }
+  }
 }
 
 // ストップボタン関数
@@ -437,12 +463,3 @@ function calculateCenterOfScreen(canvasSize, fontSize, textLength) {
   // ファントのサイズによって出現位置を調整する
   return screenHalfSize - ((textLength - 1) * (fontSize / 2)) / 2;
 }
-//===============================================
-// gameOverへの遷移が上手くいかない。
-// どこでgameOVerを判定しているかをよく見る
-//
-// test項目：
-// pause画面
-// gameover画面
-// 以上の遷移
-//===============================================
