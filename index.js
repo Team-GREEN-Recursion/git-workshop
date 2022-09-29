@@ -133,15 +133,6 @@ document.getElementById("start-button").onclick = () => {
     // ゲーム実行中をtrueにする
     gameStartFlg = true;
 
-<<<<<<< HEAD
-//DROP_SPEEDに一回第一引数の関数郡が実行されます
-setInterval(() => {
-  dropTetromino();
-  drawField();
-  drawTetromino();
-  deleteCompletedLines();
-}, DROP_SPEED);
-=======
     // "スコア"と"消したライン数"を初期化します
     document.getElementById("score-count").innerHTML = 0;
     document.getElementById("line-count").innerHTML = 0;
@@ -169,6 +160,7 @@ function onSetInterval() {
     dropTetromino();
     drawField();
     drawTetromino();
+    deleteCompletedLines();
   }, DROP_SPEED);
 }
 
@@ -192,7 +184,6 @@ document.getElementById("stop-button").onclick = () => {
     }
   }
 };
->>>>>>> c3c10bbb28e755aa32da564b47c11a7ff71a264d
 
 //---------------------- 関数部 --------------------------
 
@@ -391,7 +382,6 @@ function fixTetromino() {
   }
 }
 
-<<<<<<< HEAD
 function isLineCompleted(y) {
   for (let x = 0; x < FIELD_WIDTH; x++) {
     if (!field[y][x]) return false;
@@ -416,7 +406,9 @@ function deleteCompletedLines() {
         field[ny][nx] = field[ny - 1][nx];
       }
     }
-=======
+  }
+}
+
 // ストップボタン関数
 function onStopButton() {
   if (repeatFlg) {
@@ -432,6 +424,5 @@ function onStopButton() {
     // RESTARTボタンの表示をSTOPに変更
     document.getElementById("action").innerHTML = " STOP ";
     repeatFlg = true;
->>>>>>> c3c10bbb28e755aa32da564b47c11a7ff71a264d
   }
 }
