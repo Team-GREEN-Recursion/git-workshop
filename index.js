@@ -131,6 +131,8 @@ let gameStartFlg = false;
 //---------------------- 実行部 --------------------------
 
 document.getElementById("start-button").onclick = () => {
+  if (gameStartFlg && !gameOverFlg) return;
+
   if (!stopButtonFlg) {
     // "スコア"と"消したライン数"を初期化します
     document.getElementById("score-count").innerHTML = 0;
