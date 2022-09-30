@@ -1,7 +1,6 @@
 //---------------------- 定数部 --------------------------
 
 const DROP_SPEED = 500;
-let score = 0;
 const ONE_LINE_POINT = 10;
 
 //フィールドのサイズ
@@ -419,7 +418,6 @@ function deleteCompletedLines() {
   // delete lines
   while (completedLineIndex.length) {
     calcScore();
-    displayScore();
     inclementLineCount();
     // shift() remove the first element of the array
     let toDeleteLineIndex = completedLineIndex.shift();
@@ -481,10 +479,9 @@ function calculateCenterOfScreen(canvasSize, fontSize, textLength) {
 }
 
 function calcScore() {
-  score += ONE_LINE_POINT;
-}
-function displayScore() {
   let scoreSpan = document.getElementById("score-count");
+  let score = parseInt(scoreSpan.innerHTML);
+  score += ONE_LINE_POINT;
   scoreSpan.innerHTML = score;
 }
 
