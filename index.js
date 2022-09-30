@@ -179,7 +179,7 @@ function onClearInterval() {
 // ストップボタン押したときの処理
 document.getElementById("stop-button").onclick = () => {
   // ゲーム実行中の場合のみ動きます
-  if (gameStartFlg) {
+  if (gameStartFlg && !gameOverFlg) {
     if (stopButtonFlg) {
       // STOPボタンの時
       onStopButton();
@@ -215,6 +215,10 @@ function drawBlock(x, y, colorIndex) {
     context.fillStyle = TETROMINO_COLORS[colorIndex];
     //塗りつぶしの四角形（Rect)を描画します
     context.fillRect(pointX, pointY, BLOCK_SIZE, BLOCK_SIZE);
+  } else {
+    // 0が渡されたら着地点の予想位置に灰色ブロックを描画
+    context.fillStyle = "rgba(192,192,192,0.7)";
+    context.fillRect(pointX, pointY, BLOCK_SIZE, BLOCK_SIZE);
   }
 
   //ブロックの輪郭
@@ -247,6 +251,7 @@ function drawField() {
 function drawTetromino() {
   //着地点の高さ
   let plus = 0;
+  while (checkMove(0, plus + 1)) plus++;
 
   //テトロミノの配列をチェックし、形に合わせてブロックを描画します
   for (let y = 0; y < TETROMINO_SIZE; y++) {
@@ -293,15 +298,12 @@ document.onkeydown = function (e) {
   switch (e.key) {
     case "ArrowLeft": // 左
       if (checkMove(-1, 0)) tetromino_x--;
-      //tetromino_x--;
       break;
     case "ArrowRight": // 右
       if (checkMove(1, 0)) tetromino_x++;
-      //tetromino_x++;
       break;
     case "ArrowDown": // 下
       if (checkMove(0, 1)) tetromino_y++;
-      //tetromino_y++;
       break;
     case "ArrowUp": // 上
       // テトロミノを移動できなくなるまで落とす
@@ -427,7 +429,7 @@ function onStopButton() {
     onClearInterval();
 
     // PAUSEと画面に表示する
-    drawCaption("PAUSE", 60, "yellow");
+    if (!gameOverFlg) drawCaption("PAUSE", 60, "yellow");
 
     // STOPボタンの表示をRESTARTに変更
     document.getElementById("action").innerHTML = "RESTART";
