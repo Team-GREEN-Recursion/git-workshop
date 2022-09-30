@@ -125,7 +125,7 @@ let gameOverFlg = false;
 // STOPボタンフラグ
 let stopButtonFlg = false;
 
-// ゲーム実行中を判定するフラグ
+// ゲーム実行中かどうかを判定するフラグ
 let gameStartFlg = false;
 
 //---------------------- 実行部 --------------------------
@@ -140,7 +140,7 @@ document.getElementById("start-button").onclick = () => {
     document.getElementById("line-count").innerHTML = 0;
 
     // ゲームオーバーフラグを初期化します
-    gameOverFlg = false;
+    if (gameOverFlg) gameOverFlg = false;
 
     //フィールドを初期化してから、フィールドを描画します
     init();
@@ -163,7 +163,11 @@ function onSetInterval() {
     drawField();
     drawTetromino();
     deleteCompletedLines();
-    console.log(isGameOver());
+    if (isGameOver()) gameOverFlg = true;
+    if (gameOverFlg) {
+      drawCaption("GAME OVER", 60, "yellow");
+      return;
+    }
   }, DROP_SPEED);
 }
 
@@ -284,7 +288,7 @@ function checkMove(mx, my, newTetromino) {
 // キーボード押下後の処理
 document.onkeydown = function (e) {
   // ゲームオーバーフラグとリピートフラグが立っているならキーボード使用できなくする。
-  //if (isGameOver()) return;
+  if (gameOverFlg) return;
   if (!repeatFlg) return;
   switch (e.key) {
     case "ArrowLeft": // 左
@@ -321,9 +325,6 @@ document.onkeydown = function (e) {
   drawTetromino();
 };
 
-// ===========================================
-// TODO: 以下の回転関数は一つに統合する（余裕あれば）
-// ===========================================
 // テトロミノを右に回転する関数
 function rotateRight() {
   // 回転後のテトロミノ格納用配列
@@ -424,6 +425,10 @@ function onStopButton() {
   if (repeatFlg) {
     // インターバルを初期化
     onClearInterval();
+
+    // PAUSEと画面に表示する
+    drawCaption("PAUSE", 60, "yellow");
+
     // STOPボタンの表示をRESTARTに変更
     document.getElementById("action").innerHTML = "RESTART";
     repeatFlg = false;
@@ -435,6 +440,32 @@ function onStopButton() {
     document.getElementById("action").innerHTML = " STOP ";
     repeatFlg = true;
   }
+}
+
+// 画面中央に文字を表示する関数
+function drawCaption(text, fontSize, fontColor) {
+  // 表示位置
+  let y = CANVAS_SIZE_HEIGHT / 2;
+  let x = calculateCenterOfScreen(CANVAS_SIZE_WIDTH, fontSize, text.length);
+
+  // フォントサイズ, フォントの種類
+  context.font = `${fontSize}px 'pixel'`;
+  // フォントの縁取りの色
+  context.strokeStyle = "white";
+  // フォントの色
+  context.fillStyle = fontColor;
+  // テキストの輪郭の描写
+  context.strokeText(text, x, y);
+  // テキストの塗りつぶしの描写
+  context.fillText(text, x, y);
+}
+
+function calculateCenterOfScreen(canvasSize, fontSize, textLength) {
+  // 画面半分のサイズ
+  let screenHalfSize = canvasSize / 2;
+
+  // ファントのサイズによって出現位置を調整する
+  return screenHalfSize - ((textLength - 1) * (fontSize / 2)) / 2;
 }
 
 function calcScore() {
