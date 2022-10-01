@@ -161,7 +161,7 @@ document.getElementById("start-button").onclick = () => {
 };
 
 // setIntervalを動かすラップ関数
-function onSetInterval() {
+const onSetInterval = () => {
   // DROP_SPEEDに一回第一引数の関数郡が実行されます
   interval = setInterval(() => {
     dropTetromino();
@@ -177,12 +177,12 @@ function onSetInterval() {
       return;
     }
   }, DROP_SPEED);
-}
+};
 
 // clearIntervalを動かすラップ関数
-function onClearInterval() {
+const onClearInterval = () => {
   clearInterval(interval);
-}
+};
 
 // ストップボタン押したときの処理
 document.getElementById("stop-button").onclick = () => {
@@ -203,17 +203,17 @@ document.getElementById("stop-button").onclick = () => {
 //---------------------- 関数部 --------------------------
 
 //フィールド上のブロックを初期化する関数
-function init() {
+const init = () => {
   for (let y = 0; y < FIELD_HEIGHT; y++) {
     field[y] = [];
     for (let x = 0; x < FIELD_WIDTH; x++) {
       field[y][x] = 0;
     }
   }
-}
+};
 
 //ブロック一つを描画する関数
-function drawBlock(x, y, colorIndex) {
+const drawBlock = (x, y, colorIndex) => {
   //新しい座標を定義します
   let pointX = x * BLOCK_SIZE;
   let pointY = y * BLOCK_SIZE;
@@ -237,10 +237,10 @@ function drawBlock(x, y, colorIndex) {
   */
   context.lineWidth = 2;
   context.strokeRect(pointX, pointY, BLOCK_SIZE, BLOCK_SIZE);
-}
+};
 
 //フィールド（ブロック）を描画する関数
-function drawField() {
+const drawField = () => {
   //描画前に移動前の描画をクリア
   context.clearRect(0, 0, CANVAS_SIZE_WIDTH, CANVAS_SIZE_HEIGHT);
   for (let y = 0; y < FIELD_HEIGHT; y++) {
@@ -253,10 +253,10 @@ function drawField() {
       }
     }
   }
-}
+};
 
 //テトロミノを描画する関数
-function drawTetromino() {
+const drawTetromino = () => {
   //着地点の高さ
   let plus = 0;
   while (checkMove(0, plus + 1)) plus++;
@@ -273,10 +273,10 @@ function drawTetromino() {
       }
     }
   }
-}
+};
 
 // 移動可能かチェックを行う関数
-function checkMove(mx, my, newTetromino) {
+const checkMove = (mx, my, newTetromino) => {
   // 引数の数が足りない場合はnewTetrominoに現在のテトロミノを格納
   if (newTetromino === undefined) newTetromino = tetromino;
   for (let y = 0; y < TETROMINO_SIZE; y++) {
@@ -296,10 +296,10 @@ function checkMove(mx, my, newTetromino) {
     }
   }
   return true;
-}
+};
 
 // キーボード押下後の処理
-document.onkeydown = function (e) {
+document.onkeydown = (e) => {
   // ゲームオーバーフラグとリピートフラグが立っているならキーボード使用できなくする。
   if (gameOverFlg) return;
   if (!repeatFlg) return;
@@ -336,7 +336,7 @@ document.onkeydown = function (e) {
 };
 
 // テトロミノを右に回転する関数
-function rotateRight() {
+const rotateRight = () => {
   // 回転後のテトロミノ格納用配列
   let newTetromino = [];
 
@@ -349,7 +349,7 @@ function rotateRight() {
   }
 
   return newTetromino;
-}
+};
 
 // テトロミノを左に回転する関数
 function rotateLeft() {
@@ -367,16 +367,16 @@ function rotateLeft() {
   return newTetromino;
 }
 
-function dropTetromino() {
+const dropTetromino = () => {
   if (checkMove(0, 1, tetromino)) {
     tetromino_y++;
   } else {
     fixTetromino();
     appearNewTetro();
   }
-}
+};
 
-function appearNewTetro() {
+const appearNewTetro = () => {
   typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
   // typeIndex = 5;
   tetromino = TETROMINO_TYPES[typeIndex];
@@ -384,9 +384,9 @@ function appearNewTetro() {
   //init new tetro's coordinate
   tetromino_x = START_X;
   tetromino_y = START_Y;
-}
+};
 
-function fixTetromino() {
+const fixTetromino = () => {
   for (let y = 0; y < TETROMINO_SIZE; y++) {
     for (let x = 0; x < TETROMINO_SIZE; x++) {
       if (tetromino[y][x]) {
@@ -394,21 +394,21 @@ function fixTetromino() {
       }
     }
   }
-}
+};
 
-function isGameOver() {
+const isGameOver = () => {
   if (checkMove(0, 0, tetromino)) return false;
   else return true;
-}
+};
 
-function isLineCompleted(y) {
+const isLineCompleted = (y) => {
   for (let x = 0; x < FIELD_WIDTH; x++) {
     if (!field[y][x]) return false;
   }
   return true;
-}
+};
 
-function deleteCompletedLines() {
+const deleteCompletedLines = () => {
   let completedLineIndex = [];
 
   for (let y = 0; y < FIELD_HEIGHT; y++) {
@@ -428,10 +428,10 @@ function deleteCompletedLines() {
       }
     }
   }
-}
+};
 
 // ストップボタン関数
-function onStopButton() {
+const onStopButton = () => {
   if (repeatFlg) {
     // インターバルを初期化
     onClearInterval();
@@ -450,10 +450,10 @@ function onStopButton() {
     document.getElementById("action").innerHTML = " STOP ";
     repeatFlg = true;
   }
-}
+};
 
 // 画面中央に文字を表示する関数
-function drawCaption(text, fontSize, fontColor) {
+const drawCaption = (text, fontSize, fontColor) => {
   // 表示位置
   let y = CANVAS_SIZE_HEIGHT / 2;
   let x = calculateCenterOfScreen(CANVAS_SIZE_WIDTH, fontSize, text.length);
@@ -468,25 +468,25 @@ function drawCaption(text, fontSize, fontColor) {
   context.strokeText(text, x, y);
   // テキストの塗りつぶしの描写
   context.fillText(text, x, y);
-}
+};
 
-function calculateCenterOfScreen(canvasSize, fontSize, textLength) {
+const calculateCenterOfScreen = (canvasSize, fontSize, textLength) => {
   // 画面半分のサイズ
   let screenHalfSize = canvasSize / 2;
 
   // ファントのサイズによって出現位置を調整する
   return screenHalfSize - ((textLength - 1) * (fontSize / 2)) / 2;
-}
+};
 
-function calcScore() {
+const calcScore = () => {
   let scoreSpan = document.getElementById("score-count");
   let score = parseInt(scoreSpan.innerHTML);
   score += ONE_LINE_POINT;
   scoreSpan.innerHTML = score;
-}
+};
 
-function inclementLineCount() {
+const inclementLineCount = () => {
   let lineCountSpan = document.getElementById("line-count");
   let currentLineCount = parseInt(lineCountSpan.innerHTML);
   lineCountSpan.innerHTML = ++currentLineCount;
-}
+};
