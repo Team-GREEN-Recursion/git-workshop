@@ -418,6 +418,7 @@ function deleteCompletedLines() {
   while (completedLineIndex.length) {
     calcScore();
     displayScore();
+    inclementLineCount();
     // shift() remove the first element of the array
     let toDeleteLineIndex = completedLineIndex.shift();
 
@@ -483,4 +484,10 @@ function calcScore() {
 function displayScore() {
   let scoreSpan = document.getElementById("score-count");
   scoreSpan.innerHTML = score;
+}
+
+function inclementLineCount() {
+  let lineCountSpan = document.getElementById("line-count");
+  let currentLineCount = parseInt(lineCountSpan.innerHTML);
+  lineCountSpan.innerHTML = ++currentLineCount;
 }
