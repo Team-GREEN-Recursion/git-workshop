@@ -377,8 +377,8 @@ function dropTetromino() {
 }
 
 function appearNewTetro() {
-  // typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
-  typeIndex = 5;
+  typeIndex = Math.floor(Math.random() * (TETROMINO_TYPES.length - 1)) + 1;
+  // typeIndex = 5;
   tetromino = TETROMINO_TYPES[typeIndex];
 
   //init new tetro's coordinate
