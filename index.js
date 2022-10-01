@@ -171,6 +171,7 @@ const onSetInterval = () => {
     if (isGameOver()) {
       gameOverFlg = true;
       gameStartFlg = false;
+      onClearInterval();
     }
     if (gameOverFlg) {
       drawCaption("GAME OVER", 60, "yellow");
